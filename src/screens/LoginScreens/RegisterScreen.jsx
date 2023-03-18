@@ -1,16 +1,16 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import Spacing from '../../constants/Spacing'
-import FontSize from '../../constants/FontSize'
-import Colors from '../../constants/Colors'
-import Font from '../../constants/Font'
-import AppTextInput from '../components/AppTextInput.'
+import Spacing from '../../../constants/Spacing'
+import FontSize from '../../../constants/FontSize'
+import Colors from '../../../constants/Colors'
+import Font from '../../../constants/Font'
+import AppTextInput from '../../components/AppTextInput'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
     return (
-        <SafeAreaView>
+        <SafeAreaView >
             <View style={{ padding: Spacing * 1.8 }}>
                 <View style={styles.mainView}>
                     <Text style={styles.text1}>Create account</Text>
@@ -18,27 +18,33 @@ const RegisterScreen = () => {
                 </View>
                 <View >
                     <AppTextInput placeholder="Email" />
-                    <AppTextInput placeholder="Password" secureTextEntry/>
-                    <AppTextInput placeholder="Confirm Password" secureTextEntry/>
+                    <AppTextInput placeholder="Password" secureTextEntry />
+                    <AppTextInput placeholder="Confirm Password" secureTextEntry />
                 </View>
-                
-                <TouchableOpacity style={styles.signButton}>
+
+                <TouchableOpacity style={styles.signButton}
+                    onPress={() => navigation.navigate("OTPScreen")}
+                >
                     <Text style={styles.signintext}>Sign Up</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.createAccountButton}>
+
+                <TouchableOpacity style={styles.createAccountButton}
+                    onPress={() => navigation.navigate("Login")}
+                >
                     <Text style={styles.alreadyAccountText}>Already have an account?</Text>
                 </TouchableOpacity>
+
                 <View style={{ marginVertical: Spacing * 2 }}>
                     <Text style={styles.contniueWithText}>Or Continue With</Text>
                     <View style={styles.iconView}>
                         <TouchableOpacity style={styles.iconStyle}>
-                        <FontAwesome5 name={'google'} size={27} color="black" />
+                            <FontAwesome5 name={'google'} size={27} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconStyle}>
-                        <FontAwesome5 name={'facebook'} size={27}  color="black"/>
+                            <FontAwesome5 name={'facebook'} size={27} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconStyle}>
-                        <FontAwesome5 name={'twitter'} size={27}  color="black"/>
+                            <FontAwesome5 name={'twitter'} size={27} color="black" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
         fontFamily: Font['poppins-semiBold'],
         maxWidth: "100%",
         textAlign: "center",
-        marginBottom:25
+        marginBottom: 25
     },
     // emailInput: {
     //     fontFamily: Font['poppins-regular'],
@@ -122,7 +128,7 @@ const styles = StyleSheet.create({
         color: Colors.text,
         textAlign: "center",
         fontSize: FontSize.small,
-        fontWeight:"bold"
+        fontWeight: "bold"
 
     },
     contniueWithText: {
@@ -130,8 +136,8 @@ const styles = StyleSheet.create({
         color: Colors.primary,
         textAlign: "center",
         fontSize: FontSize.small,
-        fontWeight:"bold",
-        marginBottom:10
+        fontWeight: "bold",
+        marginBottom: 10
     },
     iconStyle: {
         padding: Spacing,
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
         marginTop: Spacing,
         flexDirection: "row",
         justifyContent: "center",
-        
+
     }
 
 })

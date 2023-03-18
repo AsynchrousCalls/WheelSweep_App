@@ -152,6 +152,13 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+   
+    implementation(project(':react-native-maps')){
+      exclude group: 'com.google.android.gms'
+     }
+    implementation 'com.google.android.gms:play-services-base:18.0.1'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
     implementation project(':react-native-vector-icons')
@@ -172,5 +179,5 @@ dependencies {
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

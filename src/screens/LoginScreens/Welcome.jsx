@@ -1,33 +1,34 @@
-import { Dimensions, ImageBackground, SafeAreaView, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
-import React, { Children } from 'react'
-import Font from '../../constants/Font'
-import Colors from '../../constants/Colors'
-import FontSize from '../../constants/FontSize'
-import Spacing from '../../constants/Spacing'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
+import { Dimensions, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import Font from '../../../constants/Font'
+import Colors from '../../../constants/Colors'
+import FontSize from '../../../constants/FontSize'
+import Spacing from '../../../constants/Spacing'
+import MyButton from '../../components/MyButton'
 const {height}=Dimensions.get("window")
-const Welcome = ({}) => {
+
+const Welcome = ({navigation}) => {
   return (
-    <SafeAreaView>
-     <View style={{marginTop:60}}>
-        <ImageBackground style={styles.ImageStyle} source={require('../../assets/images/blue_wheel.jpg' )} resizeMode="contain"/>
+    <View style={{backgroundColor:"white"}}>
+    <View style={{marginTop:60}}>
+        <ImageBackground style={styles.ImageStyle} source={require('../../../assets/images/blue_wheel.jpg' )} resizeMode="contain"/>
         <View style={styles.textView}>
         <Text style={styles.text1}>Discover Nearby Car Service Stations here</Text>
         <Text style={styles.subtext2}>Explore all service stations nearby you by your current location</Text>
         </View> 
     </View>
     <View style={styles.buttonsView}>
-        <TouchableOpacity style={styles.loginbuttonStyle}>
-            <Text style={styles.loginText}>Login</Text>
+        <TouchableOpacity style={styles.loginbuttonStyle} 
+        onPress={()=>navigation.navigate("Login")} >
+        <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity >
-        <TouchableOpacity style={styles.registerbuttonStyle}>
-            <Text style={styles.registerText}>Register</Text>
+        <TouchableOpacity style={styles.registerbuttonStyle}  
+        onPress={()=>navigation.navigate("Register")}>
+        <Text style={styles.registerText}>Register</Text>
         </TouchableOpacity>        
     </View>
-    </SafeAreaView>
+     </View>
     
-   
   )
 }
 
