@@ -1,14 +1,16 @@
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View,TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
-import Spacing from '../../constants/Spacing'
-import FontSize from '../../constants/FontSize'
-import Colors from '../../constants/Colors'
-import Font from '../../constants/Font'
-import Ionicons from 'react-native-ionicons'
+import Spacing from '../../../constants/Spacing'
+import FontSize from '../../../constants/FontSize'
+import Colors from '../../../constants/Colors'
+import Font from '../../../constants/Font'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// Import vector icons
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
     return (
-        <SafeAreaView>
+        <View style={{backgroundColor:"white"}}>
             <View style={{ padding: Spacing * 2 }}>
                 <View style={styles.mainView}>
                     <Text style={styles.text1}>Login  here</Text>
@@ -19,25 +21,36 @@ const LoginScreen = () => {
                     <TextInput style={styles.passwordInput} secureTextEntry placeholder='Password' placeholderTextColor={Colors.darkText} />
                 </View>
                 <View>
+                    <TouchableOpacity 
+                     onPress={()=>navigation.navigate("Forgot")}
+                    >
                     <Text style={styles.forgetpass}>Forget your Password ?</Text>
+                    </TouchableOpacity>
+                   
                 </View>
-                <TouchableOpacity style={styles.signButton}>
+                <TouchableOpacity style={styles.signButton}
+                 onPress={()=>navigation.navigate("HomeScreen")}
+                >
                     <Text style={styles.signintext}>Sign in</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.createAccountButton}>
+
+                <TouchableOpacity style={styles.createAccountButton}
+                onPress={()=>navigation.navigate("Register")}
+
+                >
                     <Text style={styles.createAccountText}>Create new account</Text>
                 </TouchableOpacity>
                 <View style={{ marginVertical: Spacing * 2 }}>
                     <Text style={styles.contniueWithText}>Or Continue With</Text>
                     <View style={styles.iconView}>
                         <TouchableOpacity style={styles.iconStyle}>
-                            <Ionicons  name="logo-google" color={Colors.text}  size={Spacing*2}/>
+                        <FontAwesome5 name={'google'} size={27} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconStyle}>
-                            <Ionicons  name="logo-twitter" color={Colors.text}  size={Spacing*2}/>
+                        <FontAwesome5 name={'facebook'} size={27}  color="black"/>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconStyle}>
-                            <Ionicons  name="logo-facebook" color={Colors.text}  size={Spacing*2}/>
+                        <FontAwesome5 name={'twitter'} size={27}  color="black"/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -45,7 +58,7 @@ const LoginScreen = () => {
 
 
             </View>
-        </SafeAreaView>
+        </View>
     )
 }
 

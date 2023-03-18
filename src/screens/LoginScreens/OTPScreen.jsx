@@ -1,16 +1,16 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Dimensions, ImageBackground, Pressable } from 'react-native'
 import React from 'react'
-import Spacing from '../../constants/Spacing'
-import FontSize from '../../constants/FontSize'
-import Colors from '../../constants/Colors'
-import Font from '../../constants/Font'
-import AppTextInput from '../components/AppTextInput.'
+import Spacing from '../../../constants/Spacing'
+import FontSize from '../../../constants/FontSize'
+import Colors from '../../../constants/Colors'
+import Font from '../../../constants/Font'
+import AppTextInput from '../../components/AppTextInput'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-ionicons'
 const { height } = Dimensions.get("window")
 import OTPInputView from "@twotalltotems/react-native-otp-input"
 
-const OTPScreen = () => {
+const OTPScreen = ({navigation}) => {
     return (
         <SafeAreaView>
             <View style={{ padding: Spacing * 2 }}>
@@ -18,7 +18,7 @@ const OTPScreen = () => {
                 <Ionicons name="arrow-back-outline" color={Colors.text}  size={Spacing*2}/>
                 </Pressable>
                 <View style={{ marginTop: 35,marginBottom:5}}>
-                    <ImageBackground style={styles.ImageStyle} source={require('../../assets/images/resetpass.jpg')} resizeMode="contain" />
+                    <ImageBackground style={styles.ImageStyle} source={require('../../../assets/LoginImages/EnterOTP.png')} resizeMode="contain" />
                 </View>
                 <View style={styles.textView}>
                     <Text style={styles.text1}>Enter OTP ?</Text>
@@ -30,7 +30,7 @@ const OTPScreen = () => {
                 pinCount={4}
                 autoFocusOnLoad
                 codeInputFieldStyle={{color:"#000"}}
-                // onCodeFilled={(code)=>this.props.navigation.naviagte("")}
+                onCodeFilled={() => navigation.navigate("Login")}
                
                />
                <TouchableOpacity >
@@ -39,7 +39,9 @@ const OTPScreen = () => {
                 </View>
                 
                 
-                <TouchableOpacity style={styles.submitButton}>
+                <TouchableOpacity style={styles.submitButton}
+                 onPress={() => navigation.navigate("Login")}
+                >
                     <Text style={styles.submitText}>Continue</Text>
                 </TouchableOpacity>
                

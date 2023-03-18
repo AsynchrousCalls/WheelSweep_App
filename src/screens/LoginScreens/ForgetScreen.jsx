@@ -1,16 +1,14 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Dimensions, ImageBackground, Pressable } from 'react-native'
 import React from 'react'
-import Spacing from '../../constants/Spacing'
-import FontSize from '../../constants/FontSize'
-import Colors from '../../constants/Colors'
-import Font from '../../constants/Font'
-import AppTextInput from '../components/AppTextInput.'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Spacing from '../../../constants/Spacing'
+import FontSize from '../../../constants/FontSize'
+import Colors from '../../../constants/Colors'
+import Font from '../../../constants/Font'
+import AppTextInput from '../../components/AppTextInput'
 import Ionicons from 'react-native-ionicons'
 const { height } = Dimensions.get("window")
-import AntDesign from "react-native-vector-icons/AntDesign"
 
-const ForgetScreen = () => {
+const ForgetScreen = ({navigation}) => {
     return (
         <SafeAreaView>
             <View style={{ padding: Spacing * 2 }}>
@@ -18,7 +16,7 @@ const ForgetScreen = () => {
                 <Ionicons name="arrow-back-outline" color={Colors.text}  size={Spacing*2}/>
                 </Pressable>
                 <View style={{ marginTop: 35}}>
-                    <ImageBackground style={styles.ImageStyle} source={require('../../assets/images/forget.jpg')} resizeMode="contain" />
+                    <ImageBackground style={styles.ImageStyle} source={require('../../../assets/LoginImages/Forgot.png')} resizeMode="contain" />
                 </View>
                 <View style={styles.textView}>
                     <Text style={styles.text1}>Forgot Password ?</Text>
@@ -29,7 +27,9 @@ const ForgetScreen = () => {
                     <AppTextInput  placeholder="Email"  />
                 </View>
 
-                <TouchableOpacity style={styles.submitButton}>
+                <TouchableOpacity style={styles.submitButton}
+                onPress={()=>navigation.navigate("Verify")}>
+                
                     <Text style={styles.submitText}>Submit</Text>
                 </TouchableOpacity>
             </View>

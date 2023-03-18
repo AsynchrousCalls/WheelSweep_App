@@ -1,16 +1,14 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Dimensions, ImageBackground, Pressable, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions, ImageBackground, Pressable, KeyboardAvoidingView } from 'react-native'
 import React from 'react'
-import Spacing from '../../constants/Spacing'
-import FontSize from '../../constants/FontSize'
-import Colors from '../../constants/Colors'
-import Font from '../../constants/Font'
-import AppTextInput from '../components/AppTextInput.'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Spacing from '../../../constants/Spacing'
+import FontSize from '../../../constants/FontSize'
+import Colors from '../../../constants/Colors'
+import Font from '../../../constants/Font'
+import AppTextInput from '../../components/AppTextInput'
 import Ionicons from 'react-native-ionicons'
 const { height } = Dimensions.get("window")
-import AntDesign from "react-native-vector-icons/AntDesign"
 
-const ResetScreen = () => {
+const ResetScreen = ({navigation}) => {
     return (
         
             <KeyboardAvoidingView>
@@ -19,7 +17,7 @@ const ResetScreen = () => {
                 <Ionicons name="arrow-back-outline" color={Colors.text}  size={Spacing*2}/>
                 </Pressable>
                 <View style={{ marginTop: 30}}>
-                    <ImageBackground style={styles.ImageStyle} source={require('../../assets/images/forget.jpg')} resizeMode="contain" />
+                    <ImageBackground style={styles.ImageStyle} source={require('../../../assets/LoginImages/ResetPassword.png')} resizeMode="contain" />
                 </View>
                 <View style={styles.textView}>
                     <Text style={styles.text1}>Reset Password ?</Text>
@@ -33,7 +31,9 @@ const ResetScreen = () => {
                 </View>
                 </View>
 
-                <TouchableOpacity style={styles.submitButton}>
+                <TouchableOpacity style={styles.submitButton}
+                onPress={() => navigation.navigate("Login")}
+                >
                     <Text style={styles.submitText}>Submit</Text>
                 </TouchableOpacity>
             </View>
