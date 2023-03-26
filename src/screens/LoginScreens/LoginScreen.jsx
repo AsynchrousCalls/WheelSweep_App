@@ -1,157 +1,117 @@
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View,TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
-import Spacing from '../../../constants/Spacing'
-import FontSize from '../../../constants/FontSize'
-import Colors from '../../../constants/Colors'
+import React from 'react';
+import { View, Text, SafeAreaView, Keyboard, Alert, TouchableOpacity } from 'react-native';
+import COLORS from '../../../constants/color';
 import Font from '../../../constants/Font'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-// Import vector icons
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-const LoginScreen = ({navigation}) => {
-    return (
-        <View style={{backgroundColor:"white"}}>
-            <View style={{ padding: Spacing * 2 }}>
-                <View style={styles.mainView}>
-                    <Text style={styles.text1}>Login  here</Text>
-                    <Text style={styles.text2}>Welcome back you've been missed</Text>
-                </View>
-                <View style={{ marginVertical: Spacing * 3 }}>
-                    <TextInput style={styles.emailInput} placeholder='Email' placeholderTextColor={Colors.darkText} />
-                    <TextInput style={styles.passwordInput} secureTextEntry placeholder='Password' placeholderTextColor={Colors.darkText} />
-                </View>
-                <View>
-                    <TouchableOpacity 
-                     onPress={()=>navigation.navigate("Forgot")}
-                    >
-                    <Text style={styles.forgetpass}>Forget your Password ?</Text>
-                    </TouchableOpacity>
-                   
-                </View>
-                <TouchableOpacity style={styles.signButton}
-                 onPress={()=>navigation.navigate("HomeScreen")}
-                >
-                    <Text style={styles.signintext}>Sign in</Text>
-                </TouchableOpacity>
+import Button from '../../components/CustomButton';
+import Input from '../../components/Input';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../../components/Loader';
 
-                <TouchableOpacity style={styles.createAccountButton}
-                onPress={()=>navigation.navigate("Register")}
+const LoginScreen = ({ navigation }) => {
+  const [inputs, setInputs] = React.useState({ email: '', password: '' });
+  const [errors, setErrors] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
 
-                >
-                    <Text style={styles.createAccountText}>Create new account</Text>
-                </TouchableOpacity>
-                <View style={{ marginVertical: Spacing * 2 }}>
-                    <Text style={styles.contniueWithText}>Or Continue With</Text>
-                    <View style={styles.iconView}>
-                        <TouchableOpacity style={styles.iconStyle}>
-                        <FontAwesome5 name={'google'} size={27} color="black" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconStyle}>
-                        <FontAwesome5 name={'facebook'} size={27}  color="black"/>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconStyle}>
-                        <FontAwesome5 name={'twitter'} size={27}  color="black"/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-
-
-            </View>
-        </View>
-    )
-}
-
-export default LoginScreen
-
-const styles = StyleSheet.create({
-    mainView: {
-        padding: Spacing * 2,
-        alignItems: "center"
-    },
-    text1: {
-        fontSize: FontSize.xLarge,
-        color: Colors.primary,
-        fontFamily: Font['poppins-bold'],
-        marginVertical: Spacing * 3,
-        fontWeight: "bold"
-    },
-    text2: {
-        fontSize: FontSize.large,
-        fontFamily: Font['poppins-semiBold'],
-        maxWidth: "60%",
-        textAlign: "center",
-        fontWeight: "bold"
-    },
-    emailInput: {
-        fontFamily: Font['poppins-regular'],
-        fontSize: FontSize.small,
-        padding: Spacing * 2,
-        backgroundColor: Colors.lightPrimary,
-        borderRadius: Spacing
-    },
-    passwordInput: {
-
-        fontFamily: Font['poppins-regular'],
-        fontSize: FontSize.small,
-        padding: Spacing * 2,
-        backgroundColor: Colors.lightPrimary,
-        borderRadius: Spacing,
-        marginVertical: Spacing
-    },
-    forgetpass: {
-        fontFamily: Font["poppins-bold"],
-        fontSize: FontSize.small,
-        color: Colors.primary,
-        alignSelf: "flex-end"
-    },
-    signButton: {
-        padding: Spacing * 2,
-        backgroundColor: Colors.primary,
-        marginVertical: Spacing * 2,
-        borderRadius: Spacing,
-        shadowColor: Colors.gray,
-        shadowOffset: {
-            width: 0,
-            height: Spacing
-
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: Spacing
-    },
-    signintext: {
-        fontFamily: Font["poppins-bold"],
-        color: Colors.onPrimary,
-        textAlign: "center",
-        fontSize: FontSize.large
-
-    },
-    createAccountButton: {
-        padding: Spacing * 2,
-    },
-    createAccountText: {
-        fontFamily: Font["poppins-bold"],
-        color: Colors.text,
-        textAlign: "center",
-        fontSize: FontSize.small
-
-    },
-    contniueWithText: {
-        fontFamily: Font["poppins-semibold"],
-        color: Colors.primary,
-        textAlign: "center",
-        fontSize: FontSize.small
-    },
-    iconStyle: {
-        padding: Spacing,
-        backgroundColor: Colors.gray,
-        borderRadius: Spacing / 2,
-        marginHorizontal: Spacing
-    },
-    iconView: {
-        marginTop: Spacing,
-        flexDirection: "row",
-        justifyContent: "center"
+  const validate = async () => {
+    Keyboard.dismiss();
+    let isValid = true;
+    if (!inputs.email) {
+      handleError('Please input email', 'email');
+      isValid = false;
     }
+    if (!inputs.password) {
+      handleError('Please input password', 'password');
+      isValid = false;
+    }
+    if (isValid) {
+      login();
+    }
+  };
 
-})
+  const login = ({ navigation }) => {
+    setLoading(true);
+    setTimeout(async () => {
+      setLoading(false);
+      let userData = await AsyncStorage.getItem('userData');
+      if (userData) {
+        userData = JSON.parse(userData);
+        if (
+          inputs.email == userData.email &&
+          inputs.password == userData.password
+        ) {
+          navigation.navigate('Home');
+          AsyncStorage.setItem(
+            'userData',
+            JSON.stringify({ ...userData, loggedIn: true }),
+          );
+        } else {
+          Alert.alert('Error', 'Invalid Details');
+        }
+      } else {
+        Alert.alert('Error', 'User does not exist');
+      }
+    }, 3000);
+  };
+
+  const handleOnchange = (text, input) => {
+    setInputs(prevState => ({ ...prevState, [input]: text }));
+  };
+
+  const handleError = (error, input) => {
+    setErrors(prevState => ({ ...prevState, [input]: error }));
+  };
+  return (
+    <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
+      <Loader visible={loading} />
+      <View style={{ paddingTop: 50, paddingHorizontal: 20 }}>
+        <Text style={{color: COLORS.blue, fontSize: 40, fontWeight: 'bold',marginBottom:15,alignSelf:"center" }}>
+          Login here
+        </Text>
+        <Text style={{ color: COLORS.black, fontSize: 20, fontWeight: 'bold' }}>
+        Welcome back you've been missed
+        </Text>
+        <Text style={{ color: COLORS.grey, fontSize: 18, marginVertical: 10 }}>
+          Enter Your Details to Login
+        </Text>
+        <View style={{ marginVertical: 20 }}>
+          <Input
+            onChangeText={text => handleOnchange(text, 'email')}
+            onFocus={() => handleError(null, 'email')}
+            iconName="email-outline"
+            label="Email"
+            placeholder="Enter your email address"
+            error={errors.email}
+          />
+          <Input
+            onChangeText={text => handleOnchange(text, 'password')}
+            onFocus={() => handleError(null, 'password')}
+            iconName="lock-outline"
+            label="Password"
+            placeholder="Enter your password"
+            error={errors.password}
+            password
+          />
+          <TouchableOpacity onPress={() => navigation.navigate("Forgot")} >
+            <Text style={{fontSize: 14,color: COLORS.blue,alignSelf: "flex-end",marginBottom:20}}>Forget your Password ?</Text>
+          </TouchableOpacity>
+          {/* Validate Funstion call in button for validation */}
+
+          <Button title="Log In" onPress={()=>navigation.navigate("Home")} />
+          <Text
+            onPress={() => navigation.navigate('Register')}
+            style={{
+              color: COLORS.black,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              fontSize: 16,
+            }}>
+            Don't have account ?Register
+          </Text>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default LoginScreen;

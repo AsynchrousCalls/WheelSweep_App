@@ -13,7 +13,7 @@ export default [
         title:"CAR SERVICES",
         address:"Samnabad Pasha Road main lahore ",
         time:"26 June 2022(9:00AM)",
-        image: require("../../../assets/images/service station img.png")
+        image: require("../../../assets/images/servicewash.png")
     },
     {
         id:"3",

@@ -4,8 +4,6 @@ import Spacing from '../../../constants/Spacing'
 import FontSize from '../../../constants/FontSize'
 import Colors from '../../../constants/Colors'
 import Font from '../../../constants/Font'
-import AppTextInput from '../../components/AppTextInput'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-ionicons'
 const { height } = Dimensions.get("window")
 import OTPInputView from "@twotalltotems/react-native-otp-input"
@@ -40,7 +38,7 @@ const OTPScreen = ({navigation}) => {
                 
                 
                 <TouchableOpacity style={styles.submitButton}
-                 onPress={() => navigation.navigate("Login")}
+                 onPress={() => navigation.navigate("Verify")}
                 >
                     <Text style={styles.submitText}>Continue</Text>
                 </TouchableOpacity>

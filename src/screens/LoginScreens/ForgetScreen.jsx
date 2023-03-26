@@ -4,18 +4,64 @@ import Spacing from '../../../constants/Spacing'
 import FontSize from '../../../constants/FontSize'
 import Colors from '../../../constants/Colors'
 import Font from '../../../constants/Font'
-import AppTextInput from '../../components/AppTextInput'
-import Ionicons from 'react-native-ionicons'
+import Input from '../../components/Input'
+import Button from '../../components/CustomButton';
+
 const { height } = Dimensions.get("window")
 
-const ForgetScreen = ({navigation}) => {
+const ForgotScreen = () => {
+    const [inputs, setInputs] = React.useState({email: ''});
+    const [errors, setErrors] = React.useState({});  
+    const validate = async () => {
+    //   Keyboard.dismiss();
+      let isValid = true;
+      if (!inputs.email) {
+        handleError('Please input email', 'email');
+        isValid = false;
+      }else if (!inputs.email.match(/\S+@\S+\.\S+/)) {
+        handleError('Please input a valid email', 'email');
+        isValid = false;
+    }if (isValid) {
+        OTP();
+      }
+    };
+
+    const OTP= ({navigation}) => {
+        setTimeout(async () => {
+          let userData = await AsyncStorage.getItem('userData');
+          if (userData) {
+            userData = JSON.parse(userData);
+            if (
+              inputs.email == userData.email
+            ) {
+              navigation.navigate('OTP');
+              AsyncStorage.setItem(
+                'userData',
+                JSON.stringify({...userData, loggedIn: true}),
+              );
+            } else {
+              Alert.alert('Error', 'Invalid Details');
+            }
+          } else {
+            Alert.alert('Error', 'User does not exist');
+          }
+        }, 2000);
+      };
+  
+    const handleOnchange = (text, input) => {
+      setInputs(prevState => ({...prevState, [input]: text}));
+    };
+  
+    const handleError = (error, input) => {
+      setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+   
+
     return (
         <SafeAreaView>
             <View style={{ padding: Spacing * 2 }}>
-                <Pressable>
-                <Ionicons name="arrow-back-outline" color={Colors.text}  size={Spacing*2}/>
-                </Pressable>
-                <View style={{ marginTop: 35}}>
+                <View style={{ marginTop: 35 }}>
                     <ImageBackground style={styles.ImageStyle} source={require('../../../assets/LoginImages/Forgot.png')} resizeMode="contain" />
                 </View>
                 <View style={styles.textView}>
@@ -23,48 +69,47 @@ const ForgetScreen = ({navigation}) => {
                     <Text style={styles.subtext2}>Don't Worry! It happens, please enter the email address associated with your account below:</Text>
 
                 </View>
-                <View style={{ padding: Spacing * 3 }} > 
-                    <AppTextInput  placeholder="Email"  />
-                </View>
-
-                <TouchableOpacity style={styles.submitButton}
-                onPress={()=>navigation.navigate("Verify")}>
-                
-                    <Text style={styles.submitText}>Submit</Text>
-                </TouchableOpacity>
+                <Input
+                    onChangeText={text => handleOnchange(text, 'email')}
+                    onFocus={() => handleError(null, 'email')}
+                    iconName="email-outline"
+                    placeholder="Enter your email address"
+                    error={errors.email}
+                />
+             <Button title="Submit" onPress={validate} />
             </View>
         </SafeAreaView>
     )
 }
 
-export default ForgetScreen
+export default ForgotScreen
 
 
 const styles = StyleSheet.create({
 
-   
+
     ImageStyle: {
         height: height / 3.5,
 
     },
     textView: {
         paddingHorizontal: Spacing * 3,
-        paddingTop: Spacing ,
+        paddingTop: Spacing,
 
     },
 
     text1: {
-        fontSize:45,
+        fontSize: 45,
         color: Colors.primary,
         fontFamily: Font['poppins-bold'],
         fontWeight: "bold"
     },
 
     submitButton: {
-        padding: Spacing *1.4,
-        marginHorizontal:Spacing*3,
+        padding: Spacing * 1.4,
+        marginHorizontal: Spacing * 3,
         backgroundColor: Colors.primary,
-        marginVertical: Spacing ,
+        marginVertical: Spacing,
         borderRadius: Spacing * 3,
         shadowColor: Colors.gray,
         shadowOffset: {
@@ -80,17 +125,17 @@ const styles = StyleSheet.create({
         color: Colors.onPrimary,
         textAlign: "center",
         fontSize: FontSize.large,
-        fontWeight:"bold"
+        fontWeight: "bold"
 
     },
-    subtext2:{
-        fontFamily:Font['poppins-bold'],
-        fontSize:FontSize.medium,
-        color:"grey",
-        marginBottom:12,
-    
+    subtext2: {
+        fontFamily: Font['poppins-bold'],
+        fontSize: FontSize.medium,
+        color: "grey",
+        marginBottom: 12,
+
     },
-   
+
 
 
 })

@@ -11,7 +11,6 @@ export default function DrawerNavigator() {
       <Drawer.Screen name="Main" component={Main} options={{headerShown:false}}/>
       <Drawer.Screen name="Profile" component={ProfileScreen} options={{headerShown:false}}/>
       <Drawer.Screen name="BookingDetails" component={BookingDetails} options={{headerShown:false}}/>
-
     </Drawer.Navigator>
   )
 }
