@@ -17,7 +17,7 @@ import { useState } from 'react';
 const BookingDetails = ({navigation}) => {
   const [showWarning, setShowWarning] = useState(false)
   return (
-    <View  >
+    <View style={{marginTop:35}} >
       <Modal
         visible={showWarning}
         transparent
@@ -129,7 +129,8 @@ const styles = StyleSheet.create({
   subcontainer: {
     flex: 2,
     flexDirection: "row",
-    margin: 12,
+    marginHorizontal: 20,
+    marginVertical:10,
     width: '95%',
     height: 140,
     borderRadius: 20,
@@ -239,14 +240,15 @@ const styles = StyleSheet.create({
 
     backgroundColor: "white",
     borderRadius: 7,
-    paddingVertical: 10,
+    paddingVertical: 16,
   },
   cancelButton: {
     elevation: 8,
     backgroundColor: Colors.primary,
     borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 13,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginVertical:5
   },
   getDirectionText: {
     fontSize: 12,

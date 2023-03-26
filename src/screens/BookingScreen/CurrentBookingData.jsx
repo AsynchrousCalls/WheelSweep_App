@@ -18,7 +18,7 @@ export default [
     },
     {
         id:"3",
-        title:"TECHNICAL SERVICES STATION",
+        title:"TECHNICAL STATION",
         address:"Main Market Gulberg 3, cantt",
         time:"6 May 2023(05:00AM)",
         image: require("../../../assets/images/byco.png")

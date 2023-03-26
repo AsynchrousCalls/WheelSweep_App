@@ -1,14 +1,373 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import DrawerNavigator from '../../drawer/DrawerNavigator'
-import BookingDetails from '../BookingScreen/BookingDetails'
+import { View, Text, Dimensions, StyleSheet, ScrollView, Image, FlatList ,TouchableOpacity,StatusBar} from 'react-native'
+import React, { useRef } from 'react'
+import { Icon } from "react-native-elements";
+import { colors,parameters } from '../../../Global/styles';
+import { filterData } from '../../../Global/data';
+import { stationsAround } from '../../../Global/data';
+import { PROVIDER_GOOGLE } from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps';
+import { mapStyle } from '../../../Global/mapStyle';
+const SCREEN_WIDTH = Dimensions.get('window').width;
+import Carousel from '../../components/Carousel';
+import COLORS from '../../../constants/color';
 const HomeScreen = () => {
+  const _map = useRef(1);
   return (
-    <View style={{flex:1}}>
-      {/* <DrawerNavigator/> */}
-      <Text>hi homiie</Text>
-    </View>
+    <View style={styles.container}>
+   
+            <View style={styles.header}>
+
+                <View style={styles.icon1}>
+                    <Icon type="material-community"
+                        name="menu"
+                        color={colors.white}
+                        size={40}
+                    />
+                </View>
+            </View>
+            <ScrollView>
+                <View style={styles.home}>
+                    <Text style={styles.text1}>Destress your commute</Text>
+                    <View style={styles.view1}>
+                        <View style={styles.view8}>
+                            <Text style={styles.text2}>Search Your Nearby Service Station with WheelSweeep Fast as You want </Text>
+                            <TouchableOpacity >
+                                 <View style={styles.button1}>
+                                <Text style={styles.button1Text}>Search Now</Text>
+                            </View>
+                            </TouchableOpacity>
+
+                        </View>
+                        <View>
+                            <Image style={styles.image1}
+                                source={require("../../../assets/images/searchIcon.jpg")} />
+                        </View>
+                    </View>
+                </View>
+                <View >
+                    <Text style={styles.topStation}>Top Service Station List:</Text>
+                </View>
+                <View>
+
+                    <FlatList
+                        numRows={4}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator
+                        data={filterData}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <View style={styles.card}>
+                                <View style={styles.view2}>
+                                    <Image style={styles.image2} source={item.image} />
+                                </View>
+                                <View>
+                                    <Text style={styles.title}> {item.name}</Text>
+                                </View>
+                            </View>
+                        )}
+                    />
+                </View>
+                <Carousel/>
+                <View style={styles.view3} >
+                    <Text style={styles.text3}>
+                        Search Service Stations ?
+                    </Text>
+                    <View style={styles.view4}>
+                        <Icon type="material-community"
+                            name="clock-time-four"
+                            color={colors.grey1}
+                            size={26}
+                        />
+                        <Text style={{ marginLeft: 5 }}>Now</Text>
+                        <Icon type="material-community"
+                            name="chevron-down"
+                            color={colors.grey1}
+                            size={26}
+                        />
+                    </View>
+                </View>
+
+
+                <View style={styles.view5}>
+                    <View style={styles.view6}>
+                        <View style={styles.view7}>
+                            <Icon type="material-community"
+                                name="map-marker"
+                                color={colors.black}
+                                size={22}
+                            />
+                        </View>
+                        <View >
+                            <Text style={{ fontSize: 18, color: colors.black }}>32 Main Market gulberg Rd</Text>
+                            <Text style={{ fontSize: 18, color: colors.grey3 }}>Shadra Lahore Rd</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Icon type="material-community"
+                            name="chevron-right"
+                            color={colors.grey}
+                            size={26}
+                        />
+                    </View>
+                </View>
+
+              
+                <Text style={styles.text4}>Around You</Text>
+
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
+                    <MapView
+                        ref={_map}
+                        provider={PROVIDER_GOOGLE}
+                        style={styles.map}
+                        customMapStyle={mapStyle}
+                        showsUserLocation={true}
+                        followsUserLocation={true}
+                        rotateEnabled={true}
+                        zoomEnabled={true}
+                        toolbarEnabled={true}
+                        initialregion={{...stationsAround[0],latitudeDelta:0.008,longitudeDelta:0.008}}
+                    >
+                        {stationsAround.map((item, index) =>
+                            <Marker coordinate={item} key={index.toString()}>
+                                <Image
+                                    source={require('../../../assets/images/service.jpg')}
+                                    style={styles.stationAround}
+                                    resizeMode="cover"
+                                />
+                            </Marker>
+                        )}
+                    </MapView>
+                </View>
+            </ScrollView>
+            <StatusBar backgroundColor="#2058c0" translucent={true} />
+        </View>
+    
   )
 }
 
 export default HomeScreen
+
+
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      backgroundColor: colors.white,
+      paddingBottom: 30,
+      paddingTop: parameters.statusBarHeight
+  },
+  header: {
+      backgroundColor: colors.blue,
+      height: parameters.headerHeight,
+      alignItems: "flex-start"
+
+  },
+
+  image1: {
+
+      height: 80,
+      width: 80,
+      borderRadius: 70,
+      marginTop: 12,
+      marginRight: 33
+
+
+
+  },
+
+  image2: {
+      height: 85,
+      width: 90,
+      borderRadius: 20,
+  },
+
+  home: {
+      backgroundColor: colors.blue,
+      paddingLeft: 20,
+      borderBottomRightRadius: 80
+
+  },
+
+  text1: {
+      color: colors.white,
+      fontSize: 21,
+      paddingBottom: 20,
+      paddingTop: 10
+  },
+
+  text2: {
+      color: colors.white,
+      fontSize: 16
+  },
+
+  view1: {
+      flexDirection: "row",
+      flex: 1,
+      paddingTop:15,
+      marginBottom: 12,
+
+  },
+
+  button1: {
+      height: 35,
+      width: 130,
+      backgroundColor: COLORS.white,
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 30,
+
+  },
+
+  button1Text: {
+      color: COLORS.black,
+      fontSize: 17,
+      marginTop: -2,
+
+
+  },
+  card: {
+      alignItems: "center",
+      margin: SCREEN_WIDTH / 22
+
+
+  },
+
+  view2: {
+      marginBottom: 5,
+      borderRadius: 15,
+      backgroundColor: colors.grey6
+  },
+
+  title: {
+      color: colors.black,
+      fontSize: 17,
+      fontWeight: "500",
+      fontStyle:"normal"
+  },
+  topStation: {
+      color: "black",
+      fontWeight: "bold",
+      marginLeft: 23,
+      fontSize: 17,
+      marginTop: 9
+  },
+  view3: {
+      flexDirection: "row",
+      marginTop: 5,
+      height: 50,
+      backgroundColor: colors.grey6,
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginHorizontal: 15
+
+  },
+  text3: {
+      marginLeft: 15,
+      fontSize: 17,
+      color: colors.black
+  },
+
+  view4: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginRight: 15,
+      backgroundColor: "white",
+      paddingHorizontal: 10,
+      paddingVertical: 2,
+      borderRadius: 20
+  },
+
+  view5: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "white",
+      paddingVertical: 25,
+      justifyContent: "space-between",
+      marginHorizontal: 15,
+      borderBottomColor: colors.grey4,
+      borderBottomWidth: 1,
+      flex: 1
+  },
+
+  view6: {
+
+
+      alignItems: "center",
+      flex: 5,
+      flexDirection: "row"
+  },
+  view7: {
+      backgroundColor: colors.grey6,
+      height: 40,
+      width: 40,
+      borderRadius: 20,
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: 20
+
+  },
+
+  map: {
+
+      height: 350,
+      marginVertical: 0,
+      width: SCREEN_WIDTH * 0.92
+  },
+
+  text4: {
+      fontSize: 20,
+      color: colors.black,
+      marginLeft: 20,
+      marginBottom: 20
+  },
+
+  icon1: {
+      marginLeft: 10,
+      marginTop: 5
+  },
+
+  view8: {
+      flex: 4,
+      marginTop: -28
+  },
+  stationAround: {
+      width: 60,
+      height: 50,
+
+  },
+
+  location: {
+      width: 16,
+      height: 16,
+      borderRadius: 8,
+      backgroundColor: colors.blue,
+      alignItems: "center",
+      justifyContent: "center"
+
+  },
+
+  view9: {
+      width: 4,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: "white"
+  }
+
+
+})
+ 
+// import { Text, StyleSheet, View } from 'react-native'
+// import React, { Component } from 'react'
+
+// export default class HomeScreen extends Component {
+//   render() {
+//     return (
+//       <View>
+//         <Text>HomeScreen</Text>
+//       </View>
+//     )
+//   }
+// }
+
+// const styles = StyleSheet.create({})
